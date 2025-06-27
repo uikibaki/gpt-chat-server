@@ -27,3 +27,9 @@ def ask_gpt(message):
     except Exception as e:
         print("❌ GPT 요청 실패:", str(e))
         return "⚠️ GPT 호출 중 오류가 발생했어요."
+
+
+
+# 🔥 반드시 있어야 하는 부분!
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
