@@ -40,3 +40,39 @@ def chat():
             }]
         }
     })
+
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.get_json()
+        print("💬 받은 요청 데이터:", data)
+
+        user_message = data.get("userRequest", {}).get("utterance", "안녕하세요!")
+
+        gpt_reply = ask_gpt(user_message)
+
+        return jsonify({
+            "version": "2.0",
+            "template": {
+                "outputs": [{
+                    "simpleText": {
+                        "text": gpt_reply
+                    }
+                }]
+            }
+        })
+
+    except Exception as e:
+        print("❌ 오류 발생:", str(e))  # ← 여기가 핵심!
+        return jsonify({
+            "version": "2.0",
+            "template": {
+                "outputs": [{
+                    "simpleText": {
+                        "text": "⚠️ 서버 오류가 발생했어요."
+                    }
+                }]
+            }
+        }), 500
