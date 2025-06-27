@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import requests
-import os
 
 app = Flask(__name__)
 
@@ -20,10 +19,14 @@ def ask_gpt(message):
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    try:
-        user_message = data.get("userRequest", {}).get("utterance", "")
-    except:
-        user_message = "질문이 전달되지 않았어요."
+    print("💬 받은 데이터:", data)  # <- 요청 데이터 확인용
+
+    # 일단 기본 메시지 지정
+    user_message = "안녕하세요. 무엇을 도와드릴까요?"
+
+    # utterance가 존재하면 그걸 사용
+    if data and "userRequest" in data and "utterance" in data["userRequest"]:
+        user_message = data["userRequest"]["utterance"]
 
     gpt_reply = ask_gpt(user_message)
     
@@ -37,6 +40,3 @@ def chat():
             }]
         }
     })
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
