@@ -17,7 +17,7 @@ def ask_gpt(message):
         )
 
         res_json = response.json()
-        print("✅ GPT 응답:", res_json)
+        print("✅ GPT 응답:", res_json)  # 👈 이 줄 꼭 있어야 해!
 
         if "choices" in res_json:
             return res_json["choices"][0]["message"]["content"]
