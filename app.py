@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-OPENAI_API_KEY = "너의 GPT 키를 여기 붙여넣어줘"
+OPENAI_API_KEY = "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"
 
 def ask_gpt(message):
     response = requests.post(
@@ -20,8 +20,13 @@ def ask_gpt(message):
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_message = data.get("userRequest", {}).get("utterance", "")
+    try:
+        user_message = data.get("userRequest", {}).get("utterance", "")
+    except:
+        user_message = "질문이 전달되지 않았어요."
+
     gpt_reply = ask_gpt(user_message)
+    
     return jsonify({
         "version": "2.0",
         "template": {
