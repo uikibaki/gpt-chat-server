@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "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"
 
 def ask_gpt(message):
     try:
