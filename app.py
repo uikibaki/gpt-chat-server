@@ -28,6 +28,39 @@ def ask_gpt(message):
         print("❌ GPT 요청 실패:", str(e))
         return "⚠️ GPT 호출 중 오류가 발생했어요."
 
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.get_json()
+        print("💬 받은 요청 데이터:", data)
+
+        user_message = data.get("userRequest", {}).get("utterance", "안녕하세요!")
+
+        gpt_reply = ask_gpt(user_message)
+
+        return jsonify({
+            "version": "2.0",
+            "template": {
+                "outputs": [{
+                    "simpleText": {
+                        "text": gpt_reply
+                    }
+                }]
+            }
+        })
+
+    except Exception as e:
+        print("❌ 전체 처리 실패:", str(e))
+        return jsonify({
+            "version": "2.0",
+            "template": {
+                "outputs": [{
+                    "simpleText": {
+                        "text": "서버 오류가 발생했어요. 다시 시도해주세요."
+                    }
+                }]
+            }
+        }), 500
 
 
 # 🔥 반드시 있어야 하는 부분!
